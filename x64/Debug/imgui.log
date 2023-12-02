@@ -1,0 +1,6 @@
+﻿  main.cpp
+C:\Users\PvPSwagHD\source\repos\imgui\imgui\main.cpp(81,25): warning C4244: 'argument': conversion from 'double' to 'const unsigned __int64', possible loss of data
+C:\Users\PvPSwagHD\source\repos\imgui\imgui\main.cpp(81,52): warning C4244: 'argument': conversion from 'double' to 'const unsigned __int64', possible loss of data
+C:\Users\PvPSwagHD\source\repos\imgui\imgui\main.cpp(82,35): warning C4244: 'argument': conversion from 'double' to 'const unsigned __int64', possible loss of data
+C:\Users\PvPSwagHD\source\repos\imgui\imgui\main.cpp(82,61): warning C4244: 'argument': conversion from 'double' to 'const unsigned __int64', possible loss of data
+  imgui.vcxproj -> C:\Users\PvPSwagHD\source\repos\imgui\x64\Debug\imgui.exe
