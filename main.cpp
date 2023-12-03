@@ -58,7 +58,7 @@ void draw(sf::RenderWindow& window) {
     ImGui::SameLine();
 
     int delayMs = delay.asMilliseconds();
-    if (ImGui::SliderInt("Delay", &delayMs, 0, 200, "%d ms")) {
+    if (ImGui::SliderInt("Delay", &delayMs, 50, 200, "%d ms")) {
         delay = sf::milliseconds(delayMs);
     }
 
