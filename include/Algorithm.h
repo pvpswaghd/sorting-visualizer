@@ -1,17 +1,25 @@
+#pragma once
+
+#include "Thread.h"
+#include "Variables.h"
 #include <iostream>
 #include <atomic>
-#include <thread>
+#include <thread> 
 #include <mutex>
+#include <algorithm>
+
+#define CHECK_EXIT if(!Variables::start && Variables::finished) return;
 
 class Algorithm {
 protected:
-	std::atomic<bool> start, isFinished;
-	std::atomic<bool> paused;
+	std::mutex mtx;
+	Thread* t1;
 public:
-	void start();
-	void stop();
-	void pause_and_resume();
+	Algorithm();
+	virtual ~Algorithm();
+	virtual void sort() = 0; //pure virtual function
 	
+	void CURSOR_PLACEMENT(int i);
 	bool returnStart();
 	bool isFinished();
 		

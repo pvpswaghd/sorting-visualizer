@@ -1,8 +1,14 @@
 #include "imgui.h"
 #include "implot.h"
 #include "imgui-SFML.h"
+#include "../include/Algorithm.h"
+#include "../include/BubbleSort.h"
+#include "../include/HeapSort.h"
+#include "../include/Variables.h"
+#include "../include/Thread.h"
+#include "../include/Setup.h"
+#include "../include/Sound.h"
 #include <memory>
-#include <algorithm>
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
@@ -10,59 +16,7 @@
 #include <numeric>
 #include <random>
 #include <iostream>
-#include "../include/Thread.h"
-#include "../include/Algorithm.h"
 
-static int sort_pos = 0;
-static int limit = 15;
-int temp = 0;
-std::mutex mtx;
-static bool start = false;
-static bool isReset = false;
-static double lastPos = 0.0;
-static int arrSize = 20;
-static std::vector<int> heights(arrSize);
-static std::atomic<bool> startSorting = false;
-static int delayMs = 50;
-static ImS8 cursorBar[1] = { 1 };
-
-void resetSortVisualizer() {
-    
-    std::iota(heights.begin(), heights.end(), 1); // #include <numeric> for std::iota
-
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(heights.begin(), heights.end(), g);
-
-    for (int i : heights) {
-        std::cout << i << std::endl;
-    }
-    sort_pos = 0;
-    limit = arrSize - 1;
-}
-
-void sort() {
-    while (1) {
-        std::cout << "Hello" << std::endl;
-        while (startSorting) {
-            if (lastPos < heights.size() - 1) {
-                std::lock_guard<std::mutex> lock(mtx);
-                if (heights[lastPos] < heights[lastPos + 1]) {
-                    std::swap(heights[lastPos], heights[lastPos + 1]);
-                }
-                lastPos++;
-                cursorBar[0] = heights[(int)lastPos];
-            }
-            std::cout << lastPos << " " << limit << std::endl;
-            if (lastPos >= (double)limit) {
-                lastPos = 0.0;
-                cursorBar[0] = heights[0];
-                std::cout << "Return" << std::endl;
-            }
-            std::this_thread::sleep_for(std::chrono::milliseconds(delayMs));
-        }
-    }
-}
 
 void draw(sf::RenderWindow& window) {
     ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_Always);
@@ -70,27 +24,27 @@ void draw(sf::RenderWindow& window) {
 
     float plotSizeHeight = ImGui::GetWindowContentRegionMax().y - ImGui::GetTextLineHeightWithSpacing() - 40;
     ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoTitleBar);
-
-    if (ImGui::Button("Start")) {
-        startSorting = true;
-        start = true;
+    ImGui::PushItemWidth(130);
+    if (ImGui::Combo("Algorithms", &Variables::option, Variables::algoNames, IM_ARRAYSIZE(Variables::algoNames))) {
+        Setup::switchAlgo();
     }
-
+    ImGui::PopItemWidth();
     ImGui::SameLine();
-    if (ImGui::Button("Pause / Resume")) {
-        startSorting = !startSorting;
+    if (ImGui::Button(!Variables::start ? "Start" : "Pause / Resume")) {
+        Variables::start = !Variables::start;
     }
+
 
     ImGui::SameLine();
     if (ImGui::Button("Reset")) {
-        isReset = true;
+        Variables::reset = true;
     }
     ImGui::SameLine();
-
-    if (ImGui::SliderInt("Delay", &delayMs, 50, 200, "%d ms")) {
+    ImGui::PushItemWidth(130);
+    if (ImGui::SliderInt("Delay", &Variables::delayMs, 50, 200, "%d ms")) {
         
     }
-
+    ImGui::PopItemWidth();
     ImGui::Separator();
 
     ImPlotAxisFlags axisFlags = ImPlotAxisFlags_NoGridLines | ImPlotAxisFlags_NoSideSwitch | ImPlotAxisFlags_NoHighlight;
@@ -98,12 +52,15 @@ void draw(sf::RenderWindow& window) {
     if (ImPlot::BeginPlot("Main Plot", { -1, plotSizeHeight }, ImPlotFlags_NoMenus | ImPlotFlags_NoMouseText | ImPlotFlags_NoTitle)) {
         axisFlags += ImPlotAxisFlags_NoTickLabels | ImPlotAxisFlags_NoTickMarks;
         ImPlot::SetupAxes(NULL, NULL, axisFlags, axisFlags);
-        ImPlot::PlotBars("Vertical", heights.data(), arrSize, 1.0);
-        if (start) {
+        //ImPlot::SetupAxesLimits(0, 1, 0, 1, ImPlotCond_Always);
+        ImPlot::PlotBars("Vertical", heights.data(), 20, 1.0);
+        if (Variables::start) {
             ImPlot::PushStyleColor(ImPlotCol_Fill, { 1.f, 0.f, 0.f, 1.f });
-            ImPlot::PlotBars("Cursor", &cursorBar[0], 1, 0.3, lastPos); // ImPlot::PlotBars(name, height of the bar,
+            ImPlot::PlotBars("Cursor", &(heights[Variables::cursorPos]), 1, 0.3, Variables::cursorPos); // ImPlot::PlotBars(name, height of the bar,
+            Sound::playSound(heights[Variables::cursorPos]);
             ImPlot::PopStyleColor();
         }
+        else Sound::stopSound();
         ImPlot::EndPlot();
     }
 
@@ -115,25 +72,27 @@ void draw(sf::RenderWindow& window) {
 int main() {
     sf::ContextSettings contextSettings;
 
-    sf::RenderWindow window(sf::VideoMode(1290, 720), "Bubble Sort my ass :)", sf::Style::Default, contextSettings);
+    sf::RenderWindow window(sf::VideoMode(1290, 720), "Bubble Sort", sf::Style::Default, contextSettings);
     ImGui::SFML::Init(window);
     ImGui::CreateContext();
     ImPlot::CreateContext();
+    Setup::initialize();
+    
+    for (auto i : heights) {
+        std::cout << i << std::endl;
+    }
 
     sf::Clock deltaClock;
-    resetSortVisualizer();
 
-    Thread sortThread((std::thread(sort)));
 
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
+            //std::cout << "In the main thread" << std::endl;
             ImGui::SFML::ProcessEvent(window, event);
             if (event.type == sf::Event::Closed) {
-                ImPlot::DestroyContext();
-                ImGui::DestroyContext();
                 window.close();
-                startSorting = false;
+                Variables::start = false;               
             }
         }
         ImGui::SFML::Update(window, deltaClock.restart());
@@ -142,6 +101,12 @@ int main() {
         ImGui::SFML::Render(window);
         window.display();
     }
+    
+    ImPlot::DestroyContext();
+    std::cout << "ImPlot Destroyed" << std::endl;
+    ImGui::DestroyContext();
+    std::cout << "ImGui Destroyed" << std::endl;
     ImGui::SFML::Shutdown();
+    std::cout << "SFML Destroyed" << std::endl;
     return 0;
 }

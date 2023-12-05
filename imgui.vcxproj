@@ -155,7 +155,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Algorithm.cpp" />
+    <ClCompile Include="src\BubbleSort.cpp" />
+    <ClCompile Include="src\HeapSort.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Setup.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Thread.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_dx9.cpp" />
     <ClCompile Include="vendor\imgui\backends\imgui_impl_win32.cpp" />
@@ -171,7 +176,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Desktop\Programs\reference\Libraries\imgui-sfml\imconfig-SFML.h" />
+    <ClInclude Include="include\Algorithm.h" />
+    <ClInclude Include="include\BubbleSort.h" />
+    <ClInclude Include="include\HeapSort.h" />
+    <ClInclude Include="include\Setup.h" />
+    <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\Thread.h" />
+    <ClInclude Include="include\Variables.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="vendor\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="vendor\imgui\imconfig-SFML.h" />

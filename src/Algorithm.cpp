@@ -1,14 +1,14 @@
 #include "../include/Algorithm.h"
 
-void Algorithm::start() {
+Algorithm::Algorithm(){
 
 }
 
-void Algorithm::stop() {
+Algorithm::~Algorithm() {
 
 }
 
-void Algorithm::pause_and_resume() {
-
+void Algorithm::CURSOR_PLACEMENT(int i) {
+	Variables::cursorPos = i;
+	Variables::cursorSize[0] = heights[i];
 }
-

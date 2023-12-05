@@ -1,11 +1,6 @@
 #pragma once
 
 #include <thread>
-#include <mutex>
-#include <chrono>
-#include <iostream>
-
-#include <thread>
 
 class Thread {
 public:
