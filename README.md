@@ -1,6 +1,7 @@
 # Sorting Visualizer
 
 >Note: This project is intended for self-learning. If you are an experienced C++ programmer and you wanted to give constructive criticism, please drop an issue.
+
 A simple, interactive, and visually engaging sort visualizer built with ImGui-SFML, ImGui, ImPlot, and C++.
 
 ## Description
