@@ -1,8 +1,7 @@
-#include "../include/BubbleSort.h"
+#include "BubbleSort.h"
 
 BubbleSort::BubbleSort() : Algorithm() {
 	t1 = new Thread(std::thread(&BubbleSort::sort, this));
-	std::cout << "BubbleSort Thread" << std::endl;
 }
 
 BubbleSort::~BubbleSort() {

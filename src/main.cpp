@@ -1,13 +1,13 @@
 #include "imgui.h"
 #include "implot.h"
 #include "imgui-SFML.h"
-#include "../include/Algorithm.h"
-#include "../include/BubbleSort.h"
-#include "../include/HeapSort.h"
-#include "../include/Variables.h"
-#include "../include/Thread.h"
-#include "../include/Setup.h"
-#include "../include/Sound.h"
+#include "Algorithm.h"
+#include "BubbleSort.h"
+#include "HeapSort.h"
+#include "Variables.h"
+#include "Thread.h"
+#include "Setup.h"
+//#include "Sound.h"
 #include <memory>
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
@@ -57,10 +57,10 @@ void draw(sf::RenderWindow& window) {
         if (Variables::start) {
             ImPlot::PushStyleColor(ImPlotCol_Fill, { 1.f, 0.f, 0.f, 1.f });
             ImPlot::PlotBars("Cursor", &(heights[Variables::cursorPos]), 1, 0.3, Variables::cursorPos); // ImPlot::PlotBars(name, height of the bar,
-            Sound::playSound(heights[Variables::cursorPos]);
+            //Sound::playSound(heights[Variables::cursorPos]);
             ImPlot::PopStyleColor();
         }
-        else Sound::stopSound();
+        //else Sound::stopSound();
         ImPlot::EndPlot();
     }
 
@@ -70,6 +70,7 @@ void draw(sf::RenderWindow& window) {
 
 
 int main() {
+    std::cout << "Print" << std::endl;
     sf::ContextSettings contextSettings;
 
     sf::RenderWindow window(sf::VideoMode(1290, 720), "Bubble Sort", sf::Style::Default, contextSettings);
@@ -77,7 +78,7 @@ int main() {
     ImGui::CreateContext();
     ImPlot::CreateContext();
     Setup::initialize();
-    
+    std::cout << "Print" << std::endl;
     for (auto i : heights) {
         std::cout << i << std::endl;
     }
@@ -92,7 +93,8 @@ int main() {
             ImGui::SFML::ProcessEvent(window, event);
             if (event.type == sf::Event::Closed) {
                 window.close();
-                Variables::start = false;               
+                Variables::start = false;
+                Variables::finished = true;
             }
         }
         ImGui::SFML::Update(window, deltaClock.restart());
@@ -104,9 +106,8 @@ int main() {
     
     ImPlot::DestroyContext();
     std::cout << "ImPlot Destroyed" << std::endl;
-    ImGui::DestroyContext();
-    std::cout << "ImGui Destroyed" << std::endl;
     ImGui::SFML::Shutdown();
-    std::cout << "SFML Destroyed" << std::endl;
     return 0;
+    std::cout << "SFML Destroyed" << std::endl;
+    
 }

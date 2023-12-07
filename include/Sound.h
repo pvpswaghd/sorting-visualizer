@@ -14,6 +14,6 @@ public:
 
 private:
     static inline std::map<int, sf::SoundBuffer> soundMap;
-    static inline sf::Sound sound;
-    static std::vector<sf::Int16> generateSineWave(float frequency, float seconds);
+    //static inline sf::Sound sound;
+    //static std::vector<sf::Int16> generateSineWave(float frequency, float seconds);
 };

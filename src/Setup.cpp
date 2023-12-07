@@ -1,9 +1,9 @@
-#include "../include/Setup.h"
-#include "../include/Sound.h"
+#include "Setup.h"
+#include "Sound.h"
 
 
 void Setup::initialize() {
-	Sound::initialize(Variables::arrSize);
+	//Sound::initialize(Variables::arrSize);
 	Setup::shuffle();
 	sorter = std::make_unique<BubbleSort>();
 }

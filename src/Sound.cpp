@@ -1,4 +1,4 @@
-#include "../include/Sound.h"
+/*#include "Sound.h"
 
 
 const int SAMPLE_RATE = 44100;
@@ -41,3 +41,4 @@ void Sound::stopSound()
 {
     sound.stop();
 }
+*/

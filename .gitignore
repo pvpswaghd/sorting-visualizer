@@ -1,2 +1,9 @@
 ./vendor
 ./Debug
+./x64
+./imgui.ini
+./imgui.vcxproj
+./imgui.vcxproj.filters
+./imgui.vcxproj.user
+./build
+

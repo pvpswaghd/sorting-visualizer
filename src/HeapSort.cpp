@@ -1,9 +1,8 @@
 #pragma once
-#include "../include/HeapSort.h" 
+#include "HeapSort.h" 
 
 HeapSort::HeapSort() : Algorithm() {
 	t1 = new Thread(std::thread(&HeapSort::sort, this));
-	std::cout << "HeapSort Thread" << std::endl;
 }
 
 HeapSort::~HeapSort() {

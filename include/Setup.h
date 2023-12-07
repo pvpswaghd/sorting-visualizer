@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Variables.h"
-#include "../include/Algorithm.h"
-#include "../include/BubbleSort.h"
-#include "../include/HeapSort.h"
+#include "Algorithm.h"
+#include "BubbleSort.h"
+#include "HeapSort.h"
 #include <random>
 #include <numeric>
 #include <iostream>
