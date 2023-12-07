@@ -4,6 +4,8 @@
 
 A simple, interactive, and visually engaging sort visualizer built with ImGui-SFML, ImGui, ImPlot, and C++.
 
+![image](https://github.com/pvpswaghd/sorting-visualizer/assets/44018990/5df431c5-d45a-43de-b9f6-39748fbd413f)
+
 ## Description
 
 This project provides a visual representation of various sorting algorithms in action. By taking advantage of multithreading, smart pointers, macros, and audio, the visualizer offers an intuitive and engaging way to understand and compare the mechanics and efficiency of different sorting methods.
@@ -14,17 +16,23 @@ This project provides a visual representation of various sorting algorithms in a
 * Currently only on Windows.
 
 ## Installing
-> This visualizer is still in development. I will make a shell script in the future for installing dependencies and linking the project files together.
+
+To build the repository after cloning locally, do:
+```sh
+   sh ./run.sh
+```
+
+Then, run `visualizer.exe` inside `build/Release`.
 
 ## Future Work
 The following features are planned for future updates:
 
 - Provision of sorting statistics.
+- Dynamic allocation of sorting size.
 - Detailed descriptions for each sorting algorithm.
-- Improved audio feedback.
-- CMake for managing linkers and generating makefiles.
+- Audio feedback.
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
+Heavily inspired by:
 * [StylishVisualizer](https://github.com/CosminPerRam/StylishVisualizer)
